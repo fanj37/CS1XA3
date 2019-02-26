@@ -1,0 +1,1 @@
+/home/fanj37/CS1XA3/Project01/project_analyze.sh:15:		grep -nr “#TODO” ~/CS1XA3 > ~/CS1XA3/Project01/todo.log
