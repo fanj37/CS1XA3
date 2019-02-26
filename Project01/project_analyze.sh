@@ -12,7 +12,7 @@ fi
 
 if [[ "$1" == "2" ]]
 	then
-		grep -nr “#TODO” ~/CS1XA3 > ~/CS1XA3/Project01/todo.log
+		grep -nr "#TODO" ~/CS1XA3 > ~/CS1XA3/Project01/todo.log
 
 fi
 
