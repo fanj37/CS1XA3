@@ -22,9 +22,9 @@ if [[ "$1" == "4" ]]
 		{
 			rm -f "merge.log"
 			log=`git log --oneline`
-			while read -r line; do
-				if [[ ! -z `echo $line | grep "Merge"` ]]; then
-					goal=`echo $line | cut -d " " -f 1`
+			while read -r allcommit; do
+				if [[ ! -z `echo $allcommit | grep "Merge"` ]]; then
+					goal=`echo $allcommit | cut -d " " -f 1`
 					echo $goal >> merge.log
 					echo "$goal"
 				fi
