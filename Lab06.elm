@@ -8,26 +8,26 @@ main =
                Browser.sandbox { init = init, update = update, view = view }
 
 type alias Model =
-               { s1 : String, s2 : String }
+               { stage : String, stag : String }
 
 init : Model
 init = 
                 Model "" ""
 
 type Msg
-                = Stage1 String
-                | Stage2 String
+                = Stage String
+                | Stag String
 
 update : Msg -> Model -> Model
 update msg model = 
                 case msg of 
-                                Stage1 s1 ->
-                                                { model | s1 = s1 }
-                                Stage2 s2 ->
-                                                { model | s2 = s2 }
+                                Stage stage ->
+                                                { model | stage = stage }
+                                Stag stag ->
+                                                { model | stag = stag }
 view : Model -> Html Msg
 view model = 
                 div [] 
-                                [ input [ type_ "text", value model.s1, onInput Stage1 ] 
-                                [], input [ type_ "text", value model.s2, onInput Stage2 ]
-                                [], div [] [ text (model.s1), text ":", text (model.s2) ] ]
+                                [ input [ type_ "text", value model.stage, onInput Stage ] 
+                                [], input [ type_ "text", value model.stag, onInput Stag ]
+                                [], div [] [ text (model.stage), text ":", text (model.stag) ] ]
