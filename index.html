@@ -4321,29 +4321,29 @@ function _Browser_load(url)
 	}));
 }
 var author$project$Main$Model = F2(
-	function (stage, stag) {
-		return {stag: stag, stage: stage};
+	function (stage1, stage2) {
+		return {stage1: stage1, stage2: stage2};
 	});
 var author$project$Main$init = A2(author$project$Main$Model, '', '');
 var author$project$Main$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'Stage') {
-			var stage = msg.a;
+		if (msg.$ === 'Stage1') {
+			var stage1 = msg.a;
 			return _Utils_update(
 				model,
-				{stage: stage});
+				{stage1: stage1});
 		} else {
-			var stag = msg.a;
+			var stage2 = msg.a;
 			return _Utils_update(
 				model,
-				{stag: stag});
+				{stage2: stage2});
 		}
 	});
-var author$project$Main$Stag = function (a) {
-	return {$: 'Stag', a: a};
+var author$project$Main$Stage1 = function (a) {
+	return {$: 'Stage1', a: a};
 };
-var author$project$Main$Stage = function (a) {
-	return {$: 'Stage', a: a};
+var author$project$Main$Stage2 = function (a) {
+	return {$: 'Stage2', a: a};
 };
 var elm$core$Basics$identity = function (x) {
 	return x;
@@ -4952,8 +4952,8 @@ var author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						elm$html$Html$Attributes$type_('text'),
-						elm$html$Html$Attributes$value(model.stage),
-						elm$html$Html$Events$onInput(author$project$Main$Stage)
+						elm$html$Html$Attributes$value(model.stage1),
+						elm$html$Html$Events$onInput(author$project$Main$Stage1)
 					]),
 				_List_Nil),
 				A2(
@@ -4961,8 +4961,8 @@ var author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						elm$html$Html$Attributes$type_('text'),
-						elm$html$Html$Attributes$value(model.stag),
-						elm$html$Html$Events$onInput(author$project$Main$Stag)
+						elm$html$Html$Attributes$value(model.stage2),
+						elm$html$Html$Events$onInput(author$project$Main$Stage2)
 					]),
 				_List_Nil),
 				A2(
@@ -4970,9 +4970,9 @@ var author$project$Main$view = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						elm$html$Html$text(model.stage),
+						elm$html$Html$text(model.stage1),
 						elm$html$Html$text(':'),
-						elm$html$Html$text(model.stag)
+						elm$html$Html$text(model.stage2)
 					]))
 			]));
 };

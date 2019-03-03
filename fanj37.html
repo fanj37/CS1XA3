@@ -4321,22 +4321,22 @@ function _Browser_load(url)
 	}));
 }
 var author$project$Main$Model = F2(
-	function (s1, s2) {
-		return {s1: s1, s2: s2};
+	function (stage1, stage2) {
+		return {stage1: stage1, stage2: stage2};
 	});
 var author$project$Main$init = A2(author$project$Main$Model, '', '');
 var author$project$Main$update = F2(
 	function (msg, model) {
 		if (msg.$ === 'Stage1') {
-			var s1 = msg.a;
+			var stage1 = msg.a;
 			return _Utils_update(
 				model,
-				{s1: s1});
+				{stage1: stage1});
 		} else {
-			var s2 = msg.a;
+			var stage2 = msg.a;
 			return _Utils_update(
 				model,
-				{s2: s2});
+				{stage2: stage2});
 		}
 	});
 var author$project$Main$Stage1 = function (a) {
@@ -4952,7 +4952,7 @@ var author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						elm$html$Html$Attributes$type_('text'),
-						elm$html$Html$Attributes$value(model.s1),
+						elm$html$Html$Attributes$value(model.stage1),
 						elm$html$Html$Events$onInput(author$project$Main$Stage1)
 					]),
 				_List_Nil),
@@ -4961,7 +4961,7 @@ var author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						elm$html$Html$Attributes$type_('text'),
-						elm$html$Html$Attributes$value(model.s2),
+						elm$html$Html$Attributes$value(model.stage2),
 						elm$html$Html$Events$onInput(author$project$Main$Stage2)
 					]),
 				_List_Nil),
@@ -4970,9 +4970,9 @@ var author$project$Main$view = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						elm$html$Html$text(model.s1),
+						elm$html$Html$text(model.stage1),
 						elm$html$Html$text(':'),
-						elm$html$Html$text(model.s2)
+						elm$html$Html$text(model.stage2)
 					]))
 			]));
 };
