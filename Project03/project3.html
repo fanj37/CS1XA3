@@ -1,0 +1,205 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome Play Games</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+   <link href="game.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#my-nav" aria-expanded="false">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"> Welcome </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="my-nav">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/index/">Main Page</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+             
+                  <li><a href="#">Online: User </a></li>
+                  <li><a href="login.html">Logout</a></li>
+             
+                  <li><a href="login.html">Login</a></li>
+              
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    
+    <div id="wrap"></div>  
+    <div id="ball"></div>  
+    <div id="ward"></div>  
+    <div id="gameover">
+    <p>Total Score:74</p>  
+    <span>Confirm</span> 
+    </div> 
+    <script src="jquery-1-4-1.js"></script>
+    <script type="text/javascript">
+         var oBall = document.querySelector("#ball");  
+    var oWard = document.querySelector("#ward"); 
+    var oScore = document.querySelector('#score');
+    var oWrap = document.querySelector('#wrap');  
+    var over = document.querySelector('#gameover'); 
+  
+    function Breakout(ball, ward, score, wrap, over) {   
+        this.ball = ball;  
+        this.ward = ward;  
+        this.scores = score;  
+        this.wrap = wrap;  
+        this.over = over;  
+        this.x = 0;  
+        this.y = 0;  
+        this.score = 0;  
+    }  
+    Breakout.prototype = {    
+        init: function () {  
+            this.ballstar();    
+            this.creatBrick();  
+            this.wardMove();   
+  
+        },  
+        creatBrick: function () {  
+            var x = document.documentElement.offsetWidth / 2 - document.documentElement.offsetWidth * .05, 
+                w = 45 * 2, 
+                h = 15 * 2;  
+            for (var i = 1; i <= 8; i++) {  
+                for (var j = 0; j < i * 2 - 1; j++) {     
+                    var brick = document.createElement("div");  
+                    brick.style.top = (i - 1) * h + 'px';  
+                    brick.style.left = x - (i * w) + (j * w) + 'px';  
+                    this.wrap.appendChild(brick);  
+                }  
+            }  
+        },  
+        wardMove: function () {    
+            this.ward.style.top = window.innerHeight - 180 + 'px';
+            this.ward.style.left = this.x - 60 + 'px';              
+            this.addEvent(document, 'mousemove', this.mouseMove.bind(this));   
+        },  
+        ballstar: function () {    
+            var This = this;  
+            this.y = window.innerHeight - 200;     
+            this.x = window.innerWidth / 2;         
+            this.ball.style.top = this.y + 'px';    
+            this.ball.style.left = this.x + 'px'; 
+            this.ball.speed = 10;                 
+            this.ball.width = 15;                 
+            this.ball.height = 15;                 
+            document.onclick = function () {      
+                This.ballMove();                
+            }  
+  
+        },  
+        
+        mouseMove: function (e) {                               
+            e = e || window.event;                             
+            var _left = e.pageX - this.ward.offsetWidth / 2;      
+            _left = Math.min(window.innerWidth - this.ward.offsetWidth, _left);   
+            _left = Math.max(0, _left);                                        
+            this.ward.style.left = _left + 'px';                                
+        },  
+        ballMove: function () {                  
+            document.onclick = null;           
+            this.ball.xspeed = this.ball.speed; 
+            this.ball.yspeed = -this.ball.speed;
+            function auto() {                   
+                this.x += this.ball.xspeed;   
+                this.y += this.ball.yspeed;   
+                this.crash();                   
+                this.ball.style.left = this.x + 'px';   
+                this.ball.style.top = this.y + 'px';   
+                requestAnimationFrame(auto.bind(this));   
+            }  
+  
+            auto.call(this);  
+        },  
+        crash: function () {  
+            var maxWidth = window.innerWidth - this.ball.offsetWidth;          
+            var maxHeight = window.innerHeight - this.ball.offsetHeight;       
+            if (this.y >= maxHeight) {                                       
+                this.gameOver();  
+            }  
+            if (this.x >= maxWidth) {  
+                this.ball.xspeed *= -1;                                  
+                this.x = maxWidth;                                         
+            }  
+            if (this.x < 0) {                                            
+                this.ball.xspeed = this.ball.speed;  
+                this.x = 0;  
+            }  
+            if (this.y < 0) {                                              
+                this.ball.yspeed = this.ball.speed;  
+                this.y = 0;  
+            }  
+          
+            if (Math.abs(this.x - (this.ward.offsetLeft + (this.ward.clientWidth / 2))) < 60 && Math.abs(this.y - this.ward.offsetTop - 30) < 45) {  
+                var color = this.ranColor();  
+                this.ward.style.background = color;  
+                this.ball.yspeed *= -1;  
+                this.y = this.ward.offsetTop - 40;  
+            }  
+  
+            for (var i = this.wrap.children.length - 1; i >= 0; i--) {  
+                var ballMx = this.ball.offsetLeft + (this.ball.width / 2);  
+                var ballMy = this.ball.offsetTop + (this.ball.height / 2);  
+                var brickMx = (this.wrap.children[i].offsetLeft + this.wrap.offsetLeft) + (45 / 2);  
+                var brickMy = (this.wrap.children[i].offsetTop + this.wrap.offsetTop) + (15 / 2);  
+                if (Math.abs(ballMx - brickMx) <= 45 && Math.abs(ballMy - brickMy) <= 15) {  
+                    this.ball.yspeed *= -1;  
+                    this.y = brickMy;  
+                    this.wrap.removeChild(this.wrap.children[i]);  
+                    if (this.wrap.children.length == 0) {  
+                        this.gameOver();  
+                    }  
+                    this.scoreChange();  
+                }  
+            }  
+        },  
+        scoreChange: function () {  
+            this.score++;  
+            //this.scores.innerHTML = this.score;  
+        },  
+        gameOver: function () {  
+            this.over.style.display = 'block';  
+            this.over.children[0].innerHTML = 'Total Score:' + this.score;  
+            var all = document.querySelectorAll('*');  
+            for (var i = 0; i < all.length; i++) {  
+                all[i].style.cursor = 'auto'  
+            }  
+            this.ward.style.display = 'none';  
+            this.ball.style.display = 'none';  
+            this.over.children[1].onclick = function () {  
+                window.location.reload();  
+            }  
+        },  
+        
+        addEvent: function (element, e, fn) {
+            return element.attachEvent ? element.attachEvent('on' + e, fn) : element.addEventListener(e, fn, false);  
+        },  
+        ranColor: function () {   
+            var color = '#';  
+            for (var i = 0; i < 6; i++) {  
+                color += '0123456789abcdef'[Math.floor(Math.random() * 16)]  
+            }  
+            return color;  
+        },  
+    }  
+    var breakout = new Breakout(oBall, oWard, oScore, oWrap, over);  
+    breakout.init();  
+    </script>
+    <script src="{% static 'static/bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

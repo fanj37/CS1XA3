@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>A Simple App</title>
+		<style>
+		body{
+			font-size: 20px;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		#content {
+			background-color: rgb(255,255,204);
+			margin: auto;
+			width: 70%;
+			padding:20px;
+		}
+		.next{
+			display:block;
+			margin: auto;
+			background-color: rgb(128,224,128);
+			border: none;
+			padding: 15px;
+			font-size: 20px;
+			cursor: pointer;
+		}
+		.next:hover{
+			background-color: rgb(64,224,64);
+		}
+		#warning{
+			color: rgb(255,0,0);
+		}
+		</style>
+		<script type="text/javascript">
+		//define a class question
+		function Option(text, answer){
+			this.text = text
+			this.answer = answer;
+		}
+		function Question(){
+			this.text_content = '';
+			this.options = [];
+			this.addOption = function(text, answer){
+				if(text && answer){ //the option can only be added if there are option text and answer avaliable
+					var option = new Option(text, answer);
+					this.options.push(option);
+				}
+			}
+			this.getOption = function(index){
+				return this.answers[index];
+			}
+		}
+		
+		//generate all question and answer
+		var question_list = [];
+		var q1 = new Question();
+		q1.text_content = 'In the park, you saw many painters helping people to paint self-portraits. Suddenly, you have thought about be someone’s model. Which kind of painting style do you prefer?';
+		q1.addOption('Watercolor or oil painting', 'You have a unique philosophy of life: You look serious, it seems to be the kind of people who lives a similar life every day, but it is just a unique philosophy of life. Sometimes your friends or colleagues will be amazed at your sudden humor. In fact, as long as you meet someone who suits you, you will also be a talkative guy and willing to share with others.');
+		q1.addOption('Pencil sketch', 'Usually you are a good gentleman, or a good lady, but in fact, your personality is biased and conservative. However, you do not insist on interacting with friends or colleagues. But in some things you will become more stubborn and conservative, even to the point of being incomprehensible.');
+		q1.addOption('Funny cartoon', 'You are a people that not outgoing. In front of your boss or elder, you always have a serious look. But, between colleagues or friends you are everyone\'s source of happiness. So your appearance and inner personality are simply two people. If one day someone who is not familiar with you sees your nature, he/she will be amazed.');
+		q1.addOption('Brush ink painting', 'You think a lot and you are very concerned about other people\'s opinions. You always seems happy and don\'t have any troubles. But everyone who knows you knows that you are not the kind of person who will express emotions on the face. Sometimes you feel like your personality is going to split.');
+		question_list.push(q1);
+		var q2 = new Question();
+		q2.text_content = 'Just this evening, when you are tired, you fall asleep on the bed and soon fall into a dream...<br>You open your eyes and find yourself lying on a bed in a strange room, and...';
+		q2.addOption('You didn’t even wear clothes.', 'You have a kind of self-abuse enthusiasm. Even if the other refuses your help, you just can\'t stay away. On the positive side, it is to serve the public without asking for a return, but sometimes it seems you cares too much.');
+		q2.addOption('There is a white shadow flashing in front of eyes', 'You don\'t mind helping others, but there is a precondition: this can\'t hurt your rights. However, you can\'t stand the embarrassing situation which you realize others don’t need you at all. You will be hurt if you are rejected.');
+		q2.addOption('Your body can’t move', 'You are quite lazy and super afraid of trouble. If you are asked for help, even small things could make you complain. If is possible, you would rather call someone to serve you.');
+		question_list.push(q2);
+		var q3 = new Question();
+		q3.text_content = 'Suddenly it rained, all of umbrellas in your home are broken, the rain was getting bigger and bigger, you really have no choice, which one would you choose?';
+		q3.addOption('An umbrella with a big hole', 'Obviously, an umbrella with a big hole will let you get wet. But you also think that it doesn\'t matter. In daily life, after the quarrel, you probably the one who first admitted to the mistakes, which means you are the one with good temper.');
+		q3.addOption('An umbrella with a small hole', 'Most of the time, you will apologize to the other without hurting yourself. But usually, in the real world, you may cool things down for a long time. you have a soft heart, and you will not let others down. You will never force yourself to do things that are difficult to do.');
+		q3.addOption('An umbrella with a curved handle', 'The curved handle of an umbrella is very unique. In fact, you are a very stubborn person. Usually, you don’t used to admit your mistakes. Even sometimes you will intentionally or unintentionally push the responsibility to others. Therefore, you are actually very unprincipled. In your eyes, the stability of life is more important than any principle.');
+		q3.addOption('An umbrella with a short handle', 'It implies that you are the kind of person who is very forgetful. This kind of person seems to live in the Mediterranean sunshine. The joy of knowing life depend on: an outbreak, always happy. You will be merciless when you are upset, because you want to vent pain totally.');
+		question_list.push(q3);
+		
+		//all the important element
+		var question_body, options, option_area, answer, warning, next_btn, submit_btn;
+		//all questions are finished
+		var finished = false;
+		//which question we are selecting
+		var index = 0;
+		
+		function init(){
+			//get important element
+			question_body = document.getElementById('question_body');
+			options = document.getElementById('option');
+			answer = document.getElementById('answer');
+			next_btn = document.getElementById('next_btn');
+			get_ans = document.getElementById('get_ans');
+			option_area = document.getElementById('option_area');
+			warning = document.getElementById('warning');
+			//hide get answer button 
+			get_ans.style = 'display:none !important';
+			submit_btn = document.createElement("Button");
+			//generate welcome page
+			question_body.innerHTML = 'Welcome to out Psychological test, there will be options you can answer, different options you select will have different result. <br>If you are ready please click the following button to start';
+			//change next button text
+			next_btn.innerHTML = 'Start Psychological Test';
+		}
+
+		function nextStep(){
+			if(finished) location.reload(); 
+			else {
+				var question = question_list[index];
+				answer.innerHTML = '';
+				if(question){
+					option_area.innerHTML = '';
+					question_body.innerHTML = question.text_content;
+					//add options
+					for(var i=0; i<question.options.length; i++){
+						var option = document.createElement('input');
+						option.type = "radio";
+						option.name = "options";
+						option.value = i;
+						option.id = 'option'+i;
+						var option_label = document.createElement('label');
+						option_label.innerHTML = question.options[i].text;
+						option_label.htmlFor = option.id;
+						option_area.appendChild(option);
+						option_area.appendChild(option_label);
+						var br = document.createElement("br");
+						option_area.appendChild(br);
+					}
+					//hide next question button and show showAnswer button
+					get_ans.style = '';
+					question_body.style = '';
+					options.style = '';
+					next_btn.style = 'display:none !important';
+				}
+				else {
+					answer.innerHTML = 'You\'re already finish all the questions, please click the following button to start again';
+					next_btn.innerHTML = 'Start Again';
+					finished = true;
+				}
+			}
+		}
+
+		function showAnswer(){
+			event.preventDefault();
+			warning.innerHTML = '';
+			var selected = document.querySelector('input[name="options"]:checked');
+			if(selected){
+				var question = question_list[index];
+				var select_ans = question.options[selected.value];
+				answer.innerHTML = 'Your answered: '+select_ans.text+ '<br><br>'+select_ans.answer;
+				
+				question_body.style = 'display:none !important';
+				options.style = 'display:none !important';
+				get_ans.style = 'display:none !important';
+				next_btn.innerHTML = 'Next Question';
+				next_btn.style = '';
+				index ++;
+			}
+			else {
+				warning.innerHTML = 'Warning: Please select an option';
+			}
+		}
+		
+		</script>
+	</head>
+	<body onload="init()">
+		<div id='content'>
+			<p id="question_body"></p>
+			<p id="warning"></p>
+			<form id="option" onsubmit="showAnswer()">
+				<div id="option_area"></div>
+				<input class="next" id="get_ans" type="submit" value="Get Answer"> 
+			</form>
+			<p id="answer"></p>
+			<button class="next" id="next_btn" onclick="nextStep()"></button>
+			
+		</div>
+	</body>
+</html>
